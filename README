@@ -1,0 +1,19 @@
+Justificación del Patrón Strategy:
+Problema: Se requería integrar la generación automática de contenido mediante distintos
+proveedores de LLM (OpenAI, Gemini, modelos locales) sin acoplar el código a una API específica.
+Solución: Se aplicó el patrón Strategy, definiendo la interfaz EstrategiaLLM
+con el método generarTexto(prompt). 
+La clase AgenteIA mantiene una referencia a esta interfaz (- estrategia: EstrategiaLLM). 
+De este modo, las estrategias concretas (OpenAIStrategy, GeminiStrategy, ModeloLocalStrategy) 
+son completamente intercambiables en tiempo de ejecución mediante setEstrategia(), 
+cumpliendo con el Principio de Abierto/Cerrado (OCP).
+
+Justificación de la Abstracción de Autoría y Factory Method:
+Problema: El sistema debía atribuir autoría a preguntas y respuestas 
+de forma indistinta entre usuarios registrados y agentes automáticos de IA.
+Solución: Se utilizó Polimorfismo mediante la clase abstracta Autor, 
+de la cual heredan Usuario y AgenteIA. Las entidades Publicacion (Pregunta y Respuesta) 
+se asocian únicamente con Autor. Para encapsular la lógica de instanciación y 
+evitar que la plataforma conozca los detalles de construcción de cada tipo de autor, 
+se incorporó el patrón Factory Method (FabricaAutor, FabricaUsuario, FabricaAgenteIA), 
+garantizando alta extensibilidad ante futuros tipos de emisor.
