@@ -1,3 +1,9 @@
+
+Somos el grupo 30
+        Andrada Tobias
+        Cerioli Matias
+        Escobar Santino
+
 Justificación del Patrón Strategy:
 Problema: Se requería integrar la generación automática de contenido mediante distintos
 proveedores de LLM (OpenAI, Gemini, modelos locales) sin acoplar el código a una API específica.
@@ -17,3 +23,5 @@ se asocian únicamente con Autor. Para encapsular la lógica de instanciación y
 evitar que la plataforma conozca los detalles de construcción de cada tipo de autor, 
 se incorporó el patrón Factory Method (FabricaAutor, FabricaUsuario, FabricaAgenteIA), 
 garantizando alta extensibilidad ante futuros tipos de emisor.
+
+![Diagrama de Clases](./diagrama.png)
