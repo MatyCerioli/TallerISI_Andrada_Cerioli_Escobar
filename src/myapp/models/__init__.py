@@ -1,4 +1,8 @@
 from myapp.models.user import User
 from myapp.models.autor import Autor, Usuario, Admin, UsuarioGeneral, AgenteIA
+from myapp.models.publicacion import Publicacion, Pregunta, Respuesta
 
-__all__ = ["User"]
+__all__ = [
+    "Autor", "Usuario", "Admin", "UsuarioGeneral", "AgenteIA",
+    "Publicacion", "Pregunta", "Respuesta"
+]
