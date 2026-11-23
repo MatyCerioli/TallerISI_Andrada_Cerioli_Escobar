@@ -3,7 +3,7 @@ from myapp.extensions import db
 
 # 1. Clase base
 class Publicacion:
-    __abstract__ = True  # Esto indica que no crea tabla propia
+    
 
     id = db.Column(db.Integer, primary_key=True)
     cuerpo = db.Column(db.Text, nullable=False)
@@ -37,7 +37,7 @@ class Respuesta(Publicacion, db.Model):
     es_aceptada = db.Column(db.Boolean, default=False)
 
     autor = db.relationship("Autor", back_populates="publicaciones")
-    
+
     # Relacion bidireccional
     pregunta_id = db.Column(db.Integer, db.ForeignKey("preguntas.id"), nullable=False)
     pregunta = db.relationship("Pregunta", back_populates="respuestas")
