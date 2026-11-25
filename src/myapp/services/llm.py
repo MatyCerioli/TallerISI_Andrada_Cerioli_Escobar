@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 
 # ==========================================
-# Issue #4 & #6: Patrón Strategy para los LLM
+# Issue #4 & #6: Patron Strategy para los LLM
 # ==========================================
 
 class EstrategiaLLM(ABC):
@@ -18,7 +18,7 @@ class EstrategiaLLM(ABC):
 
 
 class OpenAIStrategy(EstrategiaLLM):
-    """Estrategia concreta para integración con OpenAI GPT."""
+    """Estrategia concreta para integracion con OpenAI GPT."""
 
     def __init__(self, api_key: str = None, model: str = "gpt-4o-mini"):
         self.api_key = api_key
@@ -37,8 +37,8 @@ class GeminiStrategy(EstrategiaLLM):
         self.model = model
 
     def generar_texto(self, prompt: str) -> str:
-        # Aquí iría la llamada real a la API de Gemini
-        return f"[Gemini - {self.model}] Respuesta generada automáticamente para: {prompt[:40]}..."
+        # Aca iria la llamada real a la API de Gemini
+        return f"[Gemini - {self.model}] Respuesta generada automaticamente para: {prompt[:40]}..."
 
 
 class ModeloLocalStrategy(EstrategiaLLM):
