@@ -9,8 +9,9 @@ class Autor(db.Model):
     nombre = db.Column(db.String(120), nullable=False)
     tipo = db.Column(db.String(50))
 
-    #Relacion con publicacion
-    publicaciones = db.relationship("Publicacion", back_populates="autor")
+    #Relacion con preguntas y respuestas (no con publicacion porque no la hicimos como dbModel)
+    publicaciones = db.relationship("Pregunta", back_populates="autor")
+    respuestas = db.relationship("Respuesta", back_populates="autor")
 
     #configuracion de herencia SQLALCHEMY
     __mapper_args__ = {

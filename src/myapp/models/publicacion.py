@@ -36,7 +36,7 @@ class Respuesta(Publicacion, db.Model):
     
     es_aceptada = db.Column(db.Boolean, default=False)
 
-    autor = db.relationship("Autor", back_populates="publicaciones")
+    autor = db.relationship("Autor", back_populates="respuestas")
 
     # Relacion bidireccional
     pregunta_id = db.Column(db.Integer, db.ForeignKey("preguntas.id"), nullable=False)
