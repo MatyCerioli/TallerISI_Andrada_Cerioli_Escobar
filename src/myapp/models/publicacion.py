@@ -2,13 +2,21 @@ from datetime import datetime
 from myapp.extensions import db
 
 
-# 1. Clase base Publicacion
+# 1. Clase base Publicacion (con configuración polimórfica)
 class Publicacion(db.Model):
     __tablename__ = "publications"
 
     id = db.Column(db.Integer, primary_key=True)
     cuerpo = db.Column(db.Text, nullable=False)
     fecha_publicacion = db.Column(db.DateTime, default=datetime.utcnow)
+
+    # Discriminador para herencia polimórfica (Requerido por SQLAlchemy)
+    tipo = db.Column(db.String(50))
+
+    __mapper_args__ = {
+        "polymorphic_on": tipo,
+        "polymorphic_identity": "publicacion",
+    }
 
     # Relación bidireccional con Autor
     autor_id = db.Column(
@@ -34,6 +42,10 @@ class Pregunta(Publicacion):
     )
 
     titulo = db.Column(db.String(200), nullable=False)
+
+    __mapper_args__ = {
+        "polymorphic_identity": "pregunta",
+    }
 
     # Relación de composición con Respuesta (especificando FK para evitar ambigüedad)
     respuestas = db.relationship(
@@ -76,6 +88,10 @@ class Respuesta(Publicacion):
     )
 
     es_aceptada = db.Column(db.Boolean, default=False)
+
+    __mapper_args__ = {
+        "polymorphic_identity": "respuesta",
+    }
 
     # Relación bidireccional con Pregunta (especificando FK)
     pregunta_id = db.Column(
