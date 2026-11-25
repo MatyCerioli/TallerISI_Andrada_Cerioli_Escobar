@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - Q&A</title>
+</head>
+<body>
+    <h1>Crear una cuenta</h1>
+    
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <div>
+            <label>Nombre:</label><br>
+            <input type="text" name="nombre" required>
+        </div>
+        <div>
+            <label>Email:</label><br>
+            <input type="email" name="email" required>
+        </div>
+        <div>
+            <label>Contraseña:</label><br>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit">Registrarse</button>
+    </form>
+    
+    <p>Ya tenes cuenta? <a href="{{ url_for('web_auth.login') }}">Inicia sesion aca</a></p>
+</body>
+</html>

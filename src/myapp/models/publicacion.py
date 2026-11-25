@@ -1,3 +1,4 @@
+# src/myapp/models/publicacion.py
 from datetime import datetime
 from myapp.extensions import db
 
@@ -18,7 +19,7 @@ class Publicacion(db.Model):
         "polymorphic_identity": "publicacion",
     }
 
-    # Relación bidireccional con Autor
+    # Relación bidireccional polimórfica con Autor
     autor_id = db.Column(
         db.Integer,
         db.ForeignKey("autores.id"),
@@ -47,7 +48,7 @@ class Pregunta(Publicacion):
         "polymorphic_identity": "pregunta",
     }
 
-    # Relación de composición con Respuesta (especificando FK para evitar ambigüedad)
+    # Relación de composición con Respuesta
     respuestas = db.relationship(
         "Respuesta",
         back_populates="pregunta",

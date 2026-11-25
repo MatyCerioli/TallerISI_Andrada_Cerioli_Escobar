@@ -14,6 +14,7 @@ class Autor(db.Model):
         "polymorphic_identity": "autor",
     }
 
+    # Relación polimórfica bidireccional con Publicacion (abarca tanto Pregunta como Respuesta)
     publicaciones = db.relationship("Publicacion", back_populates="autor")
 
     def __repr__(self):
