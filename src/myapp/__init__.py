@@ -5,6 +5,7 @@ from myapp.config import Config
 from myapp.extensions import db
 from myapp.web.users import users_bp
 from myapp.api.auth import api_auth_bp
+from myapp.web.auth import web_auth_bp
 
 def create_app(test_config=None):
     app = Flask(__name__)
@@ -18,5 +19,6 @@ def create_app(test_config=None):
     app.register_blueprint(health_bp)
     app.register_blueprint(users_bp)
     app.register_blueprint(api_auth_bp)
+    app.register_blueprint(web_auth_bp)
 
     return app
