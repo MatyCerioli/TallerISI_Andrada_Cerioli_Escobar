@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Foro Q&A</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; }
+        .header { display: flex; justify-content: space-between; align-items: center; background: #333; color: white; padding: 15px; border-radius: 8px; }
+        .header a { color: white; text-decoration: none; margin-left: 10px; }
+        .card { background: white; padding: 15px; margin: 15px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .form-preguntar { background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+        textarea, input[type="text"] { width: 100%; padding: 8px; margin: 5px 0 10px; box-sizing: border-box; }
+        button { background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .respuestas { margin-left: 30px; border-left: 3px solid #ddd; padding-left: 15px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Foro Q&A</h1>
+        <nav>
+            {% if session.get('user_id') %}
+                <span>Hola, {{ session.get('user_name') }}!</span>
+                <a href="{{ url_for('web_auth.logout') }}">Cerrar Sesion</a>
+            {% else %}
+                <a href="{{ url_for('web_auth.login') }}">Iniciar Sesion</a>
+                <a href="{{ url_for('web_auth.register') }}">Registrarse</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main>
+        {% if session.get('user_id') %}
+            <div class="form-preguntar">
+                <h3>Hacer una pregunta</h3>
+                <form method="POST" action="{{ url_for('web_main.preguntar') }}">
+                    <input type="text" name="titulo" placeholder="Titulo de la pregunta" required>
+                    <textarea name="cuerpo" rows="3" placeholder="Detalle de tu pregunta..." required></textarea>
+                    <button type="submit">Publicar Pregunta</button>
+                </form>
+            </div>
+        {% endif %}
+
+        <h2>Ultimas Preguntas</h2>
+        
+        {% if preguntas %}
+            {% for pregunta in preguntas %}
+                <div class="card">
+                    <h3>{{ pregunta.titulo }}</h3>
+                    <p>{{ pregunta.cuerpo }}</p>
+                    <small>Por <strong>{{ pregunta.autor.nombre }}</strong> el {{ pregunta.fecha_publicacion.strftime('%d/%m/%Y %H:%M') }}</small>
+                    
+                    <!-- Zona de Respuestas -->
+                    <div class="respuestas">
+                        <h4>Respuestas:</h4>
+                        {% for respuesta in pregunta.respuestas %}
+                            <p><strong>{{ respuesta.autor.nombre }}:</strong> {{ respuesta.cuerpo }}</p>
+                        {% else %}
+                            <p><em>No hay respuestas aun.</em></p>
+                        {% endfor %}
+
+                        {% if session.get('user_id') %}
+                            <form method="POST" action="{{ url_for('web_main.responder', pregunta_id=pregunta.id) }}">
+                                <input type="text" name="cuerpo" placeholder="Escribe una respuesta..." required>
+                                <button type="submit">Responder</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No hay preguntas todavia. Se el primero en preguntar!</p>
+        {% endif %}
+    </main>
+</body>
+</html>

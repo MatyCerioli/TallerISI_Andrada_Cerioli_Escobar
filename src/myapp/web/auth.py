@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from myapp.extensions import db
 from myapp.models.autor import Usuario
 from myapp.services.factories import FabricaUsuario
@@ -18,7 +18,9 @@ def login():
         # 3. Verificamos si existe y si la contraseña es correcta
         if usuario and usuario.password == password:
             # Login exitoso
-            return f"¡Bienvenido {usuario.nombre}! Tu rol es: {usuario.tipo}"
+            session['user_id'] = usuario.id #guardamos esto para que el servidor recuerde al usuario
+            session['user_name'] = usuario.nombre
+            return redirect(url_for("web_main.index"))
         else:
             # Login fallido
             return render_template("auth/login.html", error="Email o password incorrectos")
@@ -28,6 +30,7 @@ def login():
 
 @web_auth_bp.route("/logout")
 def logout():
+    session.clear() #borra los datos de la session
     return redirect(url_for("web_auth.login"))
 
 
