@@ -1,6 +1,4 @@
-# src/myapp/models/autor.py
 from myapp.extensions import db
-
 
 class Autor(db.Model):
     __tablename__ = "autores"
@@ -14,8 +12,10 @@ class Autor(db.Model):
         "polymorphic_identity": "autor",
     }
 
-    # Relación polimórfica bidireccional con Publicacion (abarca tanto Pregunta como Respuesta)
-    publicaciones = db.relationship("Publicacion", back_populates="autor")
+    # Relación para las preguntas (que apuntan a Pregunta)
+    publicaciones = db.relationship("Pregunta", back_populates="autor")
+    # Relación para las respuestas (que apuntan a Respuesta)
+    respuestas = db.relationship("Respuesta", back_populates="autor")
 
     def __repr__(self):
         return f"<{self.__class__.__name__} {self.nombre}>"
@@ -34,12 +34,20 @@ class Usuario(Autor):
 
 
 class Admin(Usuario):
+    
+    __tablename__ = "admins"
+    id = db.Column(db.Integer, db.ForeignKey("usuarios.id"), primary_key=True)
+
     __mapper_args__ = {
         "polymorphic_identity": "admin",
     }
 
 
 class UsuarioGeneral(Usuario):
+    
+    __tablename__ = "usuarios_generales"
+    id = db.Column(db.Integer, db.ForeignKey("usuarios.id"), primary_key=True)
+
     __mapper_args__ = {
         "polymorphic_identity": "usuario_general",
     }
@@ -71,7 +79,7 @@ class AgenteIA(Autor):
         self._estrategia = estrategia
 
     def set_estrategia(self, estrategia):
-        """Asigna dinámicamente la estrategia LLM (Patrón Strategy)."""
+        """Asigna dinamicamente la estrategia LLM (Patron Strategy)."""
         self._estrategia = estrategia
 
     def responder(self, pregunta):
@@ -81,8 +89,9 @@ class AgenteIA(Autor):
         if not self._estrategia:
             raise ValueError("No se ha configurado una EstrategiaLLM en el AgenteIA.")
 
-        prompt = f"Título: {pregunta.titulo}\nPregunta: {pregunta.cuerpo}"
-        cuerpo_generado = self._estrategia.generar_texto(prompt)
+        prompt = f"Titulo: {pregunta.titulo}\nPregunta: {pregunta.cuerpo}"
+        
+        cuerpo_generado = self._estrategia.generarRespuesta(prompt)
 
         from myapp.models.publicacion import Respuesta
 
